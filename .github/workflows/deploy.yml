@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-      
+
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
@@ -33,14 +33,13 @@ jobs:
       - name: Build with Next.js
         run: npm run build
 
-      - name: Debug Output (List Files)
-        run: ls -R
+      - name: Disable Jekyll
+        # This prevents 404 errors by telling GitHub not to ignore the _next folder
+        run: touch out/.nojekyll
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          # If the build worked, 'out' MUST exist here. 
-          # If it fails, check the "Debug Output" log in GitHub Actions.
           path: ./out
 
   deploy:
