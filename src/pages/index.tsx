@@ -14,7 +14,6 @@ interface WorkoutTemplate {
 }
 
 export default function Home() {
-  // --- STATE ---
   const [exercises, setExercises] = useState<Exercise[]>([]);
   const [templates, setTemplates] = useState<WorkoutTemplate[]>([]);
   const [sessionName, setSessionName] = useState('Custom Session');
@@ -23,7 +22,6 @@ export default function Home() {
   const [weeklyProgress, setWeeklyProgress] = useState(0);
   const [activeTimer, setActiveTimer] = useState<{id: number, seconds: number} | null>(null);
 
-  // --- INITIAL LOAD ---
   useEffect(() => {
     const savedExercises = localStorage.getItem('hc-exercises');
     const savedHistory = localStorage.getItem('hc-history');
@@ -34,12 +32,10 @@ export default function Home() {
     if (savedHistory) calculateStats(JSON.parse(savedHistory));
   }, []);
 
-  // --- PERSISTENCE ---
   useEffect(() => {
     localStorage.setItem('hc-exercises', JSON.stringify(exercises));
   }, [exercises]);
 
-  // --- TIMER LOGIC ---
   useEffect(() => {
     let interval: NodeJS.Timeout;
     if (activeTimer && activeTimer.seconds > 0) {
@@ -105,64 +101,64 @@ export default function Home() {
   };
 
   return (
-    <div className="flex min-h-screen bg-slate-950 text-slate-100">
+    <div className="flex flex-col md:flex-row min-h-screen bg-slate-950 text-slate-100">
       <Sidebar />
-      <main className="flex-1 p-8 overflow-y-auto">
+      <main className="flex-1 p-4 md:p-8 overflow-y-auto">
         <div className="max-w-6xl mx-auto">
           
-          {/* STATS SECTION */}
-          <section className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div className="bg-gradient-to-br from-indigo-600 to-violet-700 p-6 rounded-3xl flex items-center gap-4 shadow-xl">
+          <section className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-8 md:mb-12">
+            <div className="bg-gradient-to-br from-indigo-600 to-violet-700 p-5 rounded-3xl flex items-center gap-4 shadow-xl">
               <Flame className="text-white" />
               <div>
-                <p className="text-white/70 text-xs font-bold uppercase tracking-tight">Streak</p>
-                <p className="text-2xl font-black text-white italic">{streak} Days</p>
+                <p className="text-white/70 text-[10px] font-bold uppercase tracking-tight">Streak</p>
+                <p className="text-xl font-black text-white italic">{streak} Days</p>
               </div>
             </div>
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl flex items-center gap-4">
+            <div className="bg-slate-900 border border-slate-800 p-5 rounded-3xl flex items-center gap-4">
               <Target className="text-indigo-400" />
               <div className="flex-1">
-                <p className="text-slate-500 text-xs font-bold uppercase mb-1">Weekly Goal</p>
+                <p className="text-slate-500 text-[10px] font-bold uppercase mb-1">Weekly Goal</p>
                 <div className="h-2 bg-slate-800 rounded-full overflow-hidden">
                   <div className="h-full bg-indigo-500 transition-all duration-1000" style={{ width: `${weeklyProgress}%` }}></div>
                 </div>
               </div>
             </div>
-            <div className="bg-slate-900 border border-slate-800 p-6 rounded-3xl flex items-center gap-4">
+            <div className="hidden sm:flex bg-slate-900 border border-slate-800 p-5 rounded-3xl items-center gap-4">
               <Trophy className="text-emerald-400" />
               <div>
-                <p className="text-slate-500 text-xs font-bold uppercase">Volume</p>
-                <p className="text-xl font-black text-emerald-400">
+                <p className="text-slate-500 text-[10px] font-bold uppercase">Volume</p>
+                <p className="text-lg font-black text-emerald-400">
                   {exercises.reduce((acc, curr) => acc + (curr.weight * curr.sets * curr.repetitions), 0).toLocaleString()} lb
                 </p>
               </div>
             </div>
           </section>
 
-          {/* DASHBOARD HEADER */}
-          <header className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
-            <h2 className="text-3xl font-black uppercase italic text-white">{sessionName}</h2>
-            <div className="flex flex-wrap gap-3">
-               <button onClick={saveAsNewTemplate} className="bg-slate-900 border border-indigo-500/50 text-indigo-400 px-5 py-3 rounded-2xl font-bold flex items-center gap-2"><Save size={18} /> Save Template</button>
+          <header className="flex flex-col gap-6 mb-8">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl md:text-3xl font-black uppercase italic text-white">{sessionName}</h2>
+              <button onClick={finishWorkout} className="bg-emerald-600 text-white px-6 py-2 rounded-xl font-black uppercase tracking-widest text-[10px]">Finish</button>
+            </div>
+            
+            <div className="flex overflow-x-auto gap-2 pb-2 -mx-4 px-4 md:mx-0 md:px-0 no-scrollbar">
+               <button onClick={saveAsNewTemplate} className="whitespace-nowrap bg-slate-900 border border-slate-800 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2 italic">Save Routine</button>
                
                <div className="relative group">
-                 <button className="bg-slate-800 text-white px-5 py-3 rounded-2xl font-bold flex items-center gap-2 transition-all">
-                   <Play size={18} className="text-indigo-400" /> Load <ChevronDown size={16} />
+                 <button className="whitespace-nowrap bg-slate-900 border border-slate-800 text-slate-300 px-4 py-2 rounded-xl text-xs font-bold flex items-center gap-2">
+                   Load Routine <ChevronDown size={14} />
                  </button>
-                 <div className="absolute right-0 mt-2 hidden group-hover:block bg-slate-900 border border-slate-800 p-2 rounded-2xl w-56 z-50 shadow-2xl">
+                 <div className="absolute left-0 mt-2 hidden group-hover:block bg-slate-900 border border-slate-800 p-2 rounded-xl w-48 z-50">
                     {templates.map(t => (
-                      <button key={t.id} onClick={() => loadTemplate(t)} className="w-full text-left p-3 hover:bg-indigo-600 rounded-xl text-sm font-bold transition-colors">{t.name}</button>
+                      <button key={t.id} onClick={() => loadTemplate(t)} className="w-full text-left p-3 hover:bg-indigo-600 rounded-lg text-xs font-bold">{t.name}</button>
                     ))}
                  </div>
                </div>
 
-               <button onClick={() => setIsModalOpen(true)} className="bg-slate-800 text-white px-5 py-3 rounded-2xl font-bold flex items-center gap-2"><Plus size={20} /></button>
-               <button onClick={finishWorkout} className="bg-emerald-600 text-white px-8 py-3 rounded-2xl font-black uppercase tracking-widest text-xs shadow-lg transition-all">Finish</button>
+               <button onClick={() => setIsModalOpen(true)} className="bg-indigo-600 text-white px-4 py-2 rounded-xl font-bold flex items-center gap-2"><Plus size={18} /> Add Exercise</button>
             </div>
           </header>
 
-          {/* EXERCISE CARDS LIST */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 pb-20">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pb-24 md:pb-8">
             {exercises.map((ex, i) => (
               <ExcerciseCard 
                 key={i} 
@@ -173,12 +169,11 @@ export default function Home() {
           </div>
         </div>
 
-        {/* QUICK ADD MODAL */}
         {isModalOpen && (
           <div className="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 z-50">
-            <div className="bg-slate-900 border border-slate-800 w-full max-w-lg p-8 rounded-[2.5rem] relative">
+            <div className="bg-slate-900 border border-slate-800 w-full max-w-lg p-6 md:p-8 rounded-[2rem] relative">
               <button onClick={() => setIsModalOpen(false)} className="absolute top-6 right-6 text-slate-500 hover:text-white"><X size={24} /></button>
-              <h2 className="text-2xl font-black mb-8 uppercase italic text-white">Quick Add</h2>
+              <h2 className="text-xl font-black mb-6 uppercase italic text-white">Add Exercise</h2>
               <form onSubmit={(e) => {
                 e.preventDefault();
                 const d = new FormData(e.currentTarget);
@@ -196,17 +191,17 @@ export default function Home() {
                 setExercises([...exercises, ex]);
                 setIsModalOpen(false);
               }} className="space-y-4">
-                <input name="name" placeholder="Exercise Name" className="w-full bg-slate-800 p-4 rounded-2xl font-bold outline-none border border-slate-700 focus:border-indigo-500" required />
+                <input name="name" placeholder="Exercise Name" className="w-full bg-slate-800 p-4 rounded-xl font-bold outline-none border border-slate-700" required />
                 <div className="grid grid-cols-2 gap-4">
-                  <input name="muscle" placeholder="Target Muscle" className="bg-slate-800 p-4 rounded-2xl font-bold outline-none border border-slate-700" />
-                  <input name="weight" type="number" placeholder="Weight (lb)" className="bg-slate-800 p-4 rounded-2xl font-bold text-emerald-400 outline-none border border-slate-700" />
+                  <input name="muscle" placeholder="Muscle" className="bg-slate-800 p-4 rounded-xl font-bold border border-slate-700" />
+                  <input name="weight" type="number" placeholder="Weight" className="bg-slate-800 p-4 rounded-xl font-bold border border-slate-700" />
                 </div>
                 <div className="grid grid-cols-3 gap-4">
-                  <input name="sets" type="number" placeholder="Sets" className="bg-slate-800 p-4 rounded-2xl font-bold outline-none border border-slate-700" />
-                  <input name="reps" type="number" placeholder="Reps" className="bg-slate-800 p-4 rounded-2xl font-bold outline-none border border-slate-700" />
-                  <input name="rest" type="number" placeholder="Rest (s)" className="bg-slate-800 p-4 rounded-2xl font-bold text-indigo-400 outline-none border border-slate-700" />
+                  <input name="sets" type="number" placeholder="Sets" className="bg-slate-800 p-4 rounded-xl font-bold border border-slate-700" />
+                  <input name="reps" type="number" placeholder="Reps" className="bg-slate-800 p-4 rounded-xl font-bold border border-slate-700" />
+                  <input name="rest" type="number" placeholder="Rest" className="bg-slate-800 p-4 rounded-xl font-bold border border-slate-700" />
                 </div>
-                <button type="submit" className="w-full bg-indigo-600 text-white font-black py-5 rounded-2xl uppercase tracking-widest shadow-lg shadow-indigo-500/20 transition-all">Add Exercise</button>
+                <button type="submit" className="w-full bg-indigo-600 text-white font-black py-4 rounded-xl uppercase tracking-widest">Confirm</button>
               </form>
             </div>
           </div>
