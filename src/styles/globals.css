@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+/* If you want to set the default body color in v4: */
+@layer base {
+  body {
+    background-color: theme('colors.slate.950');
+    color: theme('colors.slate.50');
+  }
+}

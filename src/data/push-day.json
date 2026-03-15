@@ -1,0 +1,52 @@
+{
+  "workout_name": "Push Day A: Chest & Triceps Focus",
+  "difficulty": "Intermediate",
+  "last_performed": "2026-03-14",
+  "exercises": [
+    {
+      "id": "ex-001",
+      "name": "Incline Barbell Bench Press",
+      "primary_muscle": "Upper Chest",
+      "secondary_muscles": ["Front Delts", "Triceps"],
+      "movement_type": "Compound / Push",
+      "suggested_scheme": "3 Sets x 8-10 Reps",
+      "notes": "Focus on a slow eccentric phase."
+    },
+    {
+      "id": "ex-002",
+      "name": "Flat Dumbbell Flyes",
+      "primary_muscle": "Mid Chest",
+      "secondary_muscles": ["Front Delts"],
+      "movement_type": "Isolation / Stretch",
+      "suggested_scheme": "3 Sets x 12-15 Reps",
+      "notes": "Keep a slight bend in the elbows; don't overstretch."
+    },
+    {
+      "id": "ex-003",
+      "name": "Weighted Dips",
+      "primary_muscle": "Lower Chest",
+      "secondary_muscles": ["Triceps", "Shoulders"],
+      "movement_type": "Bodyweight+ / Push",
+      "suggested_scheme": "3 Sets to Failure",
+      "notes": "Lean forward to emphasize chest over triceps."
+    },
+    {
+      "id": "ex-004",
+      "name": "Rope Overhead Tricep Extension",
+      "primary_muscle": "Triceps (Long Head)",
+      "secondary_muscles": [],
+      "movement_type": "Isolation / Overhead",
+      "suggested_scheme": "4 Sets x 12 Reps",
+      "notes": "Flare the rope at the top of the movement."
+    },
+    {
+      "id": "ex-005",
+      "name": "Single Arm Cable Pressdown",
+      "primary_muscle": "Triceps (Lateral Head)",
+      "secondary_muscles": [],
+      "movement_type": "Isolation / Uni-lateral",
+      "suggested_scheme": "3 Sets x 15 Reps",
+      "notes": "Focus on the mind-muscle connection and the squeeze."
+    }
+  ]
+}
